@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 @Entity
@@ -23,20 +22,16 @@ public class Client implements Serializable {
 	private String name;
 	private String cpf;
 	private Double income;
-	private Instant birthDate;
-	private Integer children;
 	
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") 
-	private Instant createdAt;
-	
-	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-	private Instant updatedAt;
+	private Instant birthDate;
+	private Integer children;
 	
 	public Client() {
 		
 	}
 
-	public Client(Long id, String name, String cpf, Double income, Instant birthDate, Integer children) {
+	public Client(Long id, String name, String cpf, Double income, Instant birthDate,  Integer children) {
 		
 		this.id = id;
 		this.name = name;
@@ -78,13 +73,6 @@ public class Client implements Serializable {
 		this.income = income;
 	}
 
-	public Instant getBirthDate() {
-		return birthDate;
-	}
-
-	public void setBirthDate(Instant birthDate) {
-		this.birthDate = birthDate;
-	}
 
 	public Integer getChildren() {
 		return children;
@@ -102,25 +90,18 @@ public class Client implements Serializable {
 		return result;
 	}
 	
-	public Instant getCreatedAt() { 
-		return createdAt;
-	}
-
-
-	public Instant getUpdatedAt() {
-		return updatedAt;
-	}
 	
+	
+	public Instant getBirthDate() {
+		return birthDate;
+	}
+
 	@PrePersist
-	public void prePersist() {  
-		createdAt = Instant.now();
+	public void prePersist() {
+		birthDate = Instant.now();
 	}
 	
-	@PreUpdate
-	public void preUpdate() { 
-		updatedAt = Instant.now();
-	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

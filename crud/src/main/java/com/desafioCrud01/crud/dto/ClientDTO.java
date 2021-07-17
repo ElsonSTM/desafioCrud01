@@ -67,13 +67,6 @@ public class ClientDTO implements Serializable {
 		this.income = income;
 	}
 
-	public Instant getBirthDate() {
-		return birthDate;
-	}
-
-	public void setBirthDate(Instant birthDate) {
-		this.birthDate = birthDate;
-	}
 
 	public Integer getChildren() {
 		return children;
@@ -83,5 +76,11 @@ public class ClientDTO implements Serializable {
 		this.children = children;
 	}
 
-	
+	public Instant getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(Instant birthDate) {
+		this.birthDate = birthDate;
+	}
 }
