@@ -1,20 +1,21 @@
 package com.desafioCrud01.crud.services;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.desafioCrud01.crud.dto.ClientDTO;
 import com.desafioCrud01.crud.entities.Client;
 import com.desafioCrud01.crud.repositories.ClientRepository;
-import com.desafioCrud01.crud.resources.execeptions.ResourceException;
+import com.desafioCrud01.crud.services.exceptions.DatabaseExecption;
 import com.desafioCrud01.crud.services.exceptions.ResourceNotFoundExecption;
 
 @Service
@@ -24,10 +25,9 @@ public class ClientService {
 	private ClientRepository repository;
 
 	@Transactional(readOnly = true)
-	public List<ClientDTO> findAll(){		
-		List<Client> list = repository.findAll();
-		
-		return list.stream().map(x -> new ClientDTO(x)).collect(Collectors.toList());
+	public Page<ClientDTO> findAllPaged(PageRequest pageRequest ){		
+		Page<Client> list = repository.findAll(pageRequest);
+		return list.map(x -> new ClientDTO(x));
 		}
 	
 	@Transactional(readOnly = true)
@@ -64,5 +64,18 @@ public class ClientService {
 		catch(EntityNotFoundException e){
 			throw new ResourceNotFoundExecption("Esse "+ id +" não existe!");
 		}
+	}
+
+	public void delete(Long id) {
+		try {
+			repository.deleteById(id);
+		}
+		catch(EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundExecption("Esse "+ id +" não existe!");
+		}
+		catch(DataIntegrityViolationException e) {
+			throw new DatabaseExecption("Violação de Integridade");
+		}
+		
 	}
 }

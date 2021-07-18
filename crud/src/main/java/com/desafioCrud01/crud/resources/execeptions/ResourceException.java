@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.desafioCrud01.crud.services.exceptions.DatabaseExecption;
+
 @ControllerAdvice
 public class ResourceException {
 
@@ -25,6 +27,21 @@ public class ResourceException {
 		err.setPath(request.getRequestURI());
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+	}
+	
+	@ExceptionHandler(DatabaseExecption.class)
+	public ResponseEntity<StandardError> database(DatabaseExecption e, HttpServletRequest request) {
+	
+		HttpStatus status = HttpStatus.BAD_REQUEST; 
+		StandardError err = new StandardError();
+		
+		err.setTimestap(Instant.now());
+		err.setStatus(status.value());
+		err.setError("Database exception");
+		err.setMessage(e.getMessage());
+		err.setPath(request.getRequestURI());
+		
+		return ResponseEntity.status(status).body(err);
 	}
 
 }
