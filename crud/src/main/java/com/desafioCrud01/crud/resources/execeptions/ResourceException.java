@@ -2,7 +2,6 @@ package com.desafioCrud01.crud.resources.execeptions;
 
 import java.time.Instant;
 
-import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
@@ -11,12 +10,13 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.desafioCrud01.crud.services.exceptions.DatabaseExecption;
+import com.desafioCrud01.crud.services.exceptions.ResourceNotFoundExecption;
 
 @ControllerAdvice
 public class ResourceException {
 
-	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity<StandardError> entityNotFound(EntityNotFoundException e, HttpServletRequest request) {
+	@ExceptionHandler(ResourceNotFoundExecption.class)
+	public ResponseEntity<StandardError> entityNotFound(ResourceNotFoundExecption e, HttpServletRequest request) {
 
 		StandardError err = new StandardError();
 
